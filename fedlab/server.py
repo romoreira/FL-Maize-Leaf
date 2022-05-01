@@ -2,12 +2,18 @@ from cgitb import handler
 import os
 import sys
 import argparse
+import torch
 from torch import nn
 sys.path.append("../../")
 from fedlab.core.network import DistNetwork
 from fedlab.core.server.handler import AsyncParameterServerHandler
 from fedlab.core.server.manager import AsynchronousServerManager
-from fedlab.utils.functional import AverageMeter
+from fedlab.utils.functional import evaluate
+from fedlab.utils.dataset.sampler import RawPartitionSampler
+
+import torchvision
+import torchvision.transforms as transforms
+
 
 # torch model
 class MLP(nn.Module):
@@ -44,3 +50,14 @@ if __name__ == "__main__":
     Manager = AsynchronousServerManager(handler=handler, network=network)
 
     Manager.run()
+
+    root = "../../tests/data/mnist/"
+    testset = torchvision.datasets.MNIST(root=root, train=False, download=True, transform=transforms.ToTensor())
+    testloader = torch.utils.data.DataLoader(
+        testset,
+        batch_size=100,
+        drop_last=True)
+
+    criterion = nn.CrossEntropyLoss()
+
+    print("Final Score Server: "+str(evaluate(model, criterion, testloader)))

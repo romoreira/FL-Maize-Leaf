@@ -117,4 +117,4 @@ network = DistNetwork(address=(args.ip, args.port),
 Manager = ActiveClientManager(trainer=handler, network=network)
 Manager.run()
 
-print(evaluate(model, criterion, testloader))
+print("Final Score Client: "+str(evaluate(model, criterion, testloader)))
