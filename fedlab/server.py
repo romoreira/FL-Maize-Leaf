@@ -9,7 +9,7 @@ from fedlab.core.network import DistNetwork
 from fedlab.core.server.handler import AsyncParameterServerHandler
 from fedlab.core.server.manager import AsynchronousServerManager
 from fedlab.utils.functional import evaluate
-from fedlab.utils.dataset.sampler import RawPartitionSampler
+from fedlab.utils.functional import partition_report
 
 import torchvision
 import torchvision.transforms as transforms
