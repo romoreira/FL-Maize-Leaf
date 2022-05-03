@@ -18,11 +18,11 @@ from fedlab.utils.functional import AverageMeter, evaluate
 # torch model
 class MLP(nn.Module):
 
-    def __init__(self, input_size=784, output_size=10):
+    def __init__(self, input_size=150528, output_size=32):
         super(MLP, self).__init__()
-        self.fc1 = nn.Linear(input_size, 200)
-        self.fc2 = nn.Linear(200, 200)
-        self.fc3 = nn.Linear(200, output_size)
+        self.fc1 = nn.Linear(input_size, 32)
+        self.fc2 = nn.Linear(32, 32)
+        self.fc3 = nn.Linear(32, output_size)
         self.relu = nn.ReLU()
 
     def forward(self, x):
@@ -31,7 +31,6 @@ class MLP(nn.Module):
         x = self.relu(self.fc2(x))
         x = self.fc3(x)
         return x
-
 
 class AsyncClientTrainer(SGDClientTrainer):
 

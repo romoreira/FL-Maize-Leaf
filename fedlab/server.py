@@ -17,11 +17,12 @@ import torchvision.transforms as transforms
 
 # torch model
 class MLP(nn.Module):
-    def __init__(self, input_size=784, output_size=4):
+
+    def __init__(self, input_size=150528, output_size=32):
         super(MLP, self).__init__()
-        self.fc1 = nn.Linear(input_size, 200)
-        self.fc2 = nn.Linear(200, 200)
-        self.fc3 = nn.Linear(200, output_size)
+        self.fc1 = nn.Linear(input_size, 32)
+        self.fc2 = nn.Linear(32, 32)
+        self.fc3 = nn.Linear(32, output_size)
         self.relu = nn.ReLU()
 
     def forward(self, x):
@@ -66,8 +67,7 @@ if __name__ == "__main__":
     parser.add_argument('--world_size', type=int)
     args = parser.parse_args()
 
-    mlp = MLP()
-    model, input_size = mlp.initialize_model("resnet", 4, feature_extract=True, use_pretrained=True)
+    model = MLP()
 
     handler = AsyncParameterServerHandler(model, alpha=0.5, total_time=5)
 
@@ -82,9 +82,9 @@ if __name__ == "__main__":
     testset = torchvision.datasets.MNIST(root=root, train=False, download=True, transform=transforms.ToTensor())
     testloader = torch.utils.data.DataLoader(
         testset,
-        batch_size=100,
+        batch_size=16,
         drop_last=True)
 
     criterion = nn.CrossEntropyLoss()
 
-    print("Final Score Server: "+str(evaluate(model, criterion, testloader)))
+    #print("Final Score Server: "+str(evaluate(model, criterion, testloader)))
