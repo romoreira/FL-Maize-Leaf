@@ -14,7 +14,7 @@ from torchvision import datasets, models, transforms
 import torchvision
 import torchvision.transforms as transforms
 
-
+"""
 # torch model
 class MLP(nn.Module):
 
@@ -31,32 +31,7 @@ class MLP(nn.Module):
         x = self.relu(self.fc2(x))
         x = self.fc3(x)
         return x
-
-    def set_parameter_requires_grad(self, model, feature_extracting):
-        if feature_extracting:
-            for param in model.parameters():
-                param.requires_grad = True
-
-    def initialize_model(self, model_name, num_classes, feature_extract, use_pretrained=True):
-        # Inicializando cada variável específica para cada modelo
-        model_ft = None
-        input_size = 0
-
-        if model_name == "resnet":
-            """ Resnet18
-            """
-            # model_ft = models.resnet18(pretrained=use_pretrained)
-            model_ft = models.resnet34(pretrained=use_pretrained)
-            self.set_parameter_requires_grad(model_ft, feature_extract)
-            num_ftrs = model_ft.fc.in_features
-            model_ft.fc = nn.Linear(num_ftrs, num_classes)
-            input_size = 224
-
-        else:
-            print("Invalid model name, exiting...")
-            exit()
-
-        return model_ft, input_size
+"""
 
 
 if __name__ == "__main__":
@@ -67,9 +42,15 @@ if __name__ == "__main__":
     parser.add_argument('--world_size', type=int)
     args = parser.parse_args()
 
-    model = MLP()
+    #model = MLP()
 
-    handler = AsyncParameterServerHandler(model, alpha=0.5, total_time=5)
+    model_ft = models.squeezenet1_0(pretrained=True)
+    for param in model_ft.parameters():
+        param.requires_grad = True
+    model_ft.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1, 1), stride=(1, 1))
+    model_ft.num_classes = 4
+
+    handler = AsyncParameterServerHandler(model_ft, alpha=0.5, total_time=5)
 
     network = DistNetwork(address=(args.ip, args.port),
                           world_size=args.world_size,
@@ -78,13 +59,27 @@ if __name__ == "__main__":
 
     Manager.run()
 
-    root = "../../tests/data/mnist/"
-    testset = torchvision.datasets.MNIST(root=root, train=False, download=True, transform=transforms.ToTensor())
-    testloader = torch.utils.data.DataLoader(
-        testset,
-        batch_size=16,
-        drop_last=True)
+
+
+    batch_size = 16
+    num_workers = 4
+    test_transforms = transforms.Compose([
+        transforms.Resize(size=[224, 224]),
+        transforms.RandomVerticalFlip(0.5),
+        transforms.RandomRotation(30),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
+    data_dir = '../../dataset/'
+    classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
+    test_dir = os.path.join(data_dir + '5-fold/')
+    test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
+    testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
+                                             shuffle=False, num_workers=num_workers)
+
+
+
 
     criterion = nn.CrossEntropyLoss()
 
-    #print("Final Score Server: "+str(evaluate(model, criterion, testloader)))
+    print("Final Score Server: "+str(evaluate(model_ft, criterion, testloader)))

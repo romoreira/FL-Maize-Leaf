@@ -5,6 +5,7 @@ import sys
 import os
 from torch import nn
 import torchvision.datasets as datasets
+from torchvision import datasets, models, transforms
 
 sys.path.append("../../")
 from fedlab.core.client.manager import ActiveClientManager
@@ -14,7 +15,7 @@ from fedlab.core.network import DistNetwork
 from fedlab.utils.functional import AverageMeter, evaluate
 
 
-
+"""
 # torch model
 class MLP(nn.Module):
 
@@ -31,7 +32,7 @@ class MLP(nn.Module):
         x = self.relu(self.fc2(x))
         x = self.fc3(x)
         return x
-
+"""
 class AsyncClientTrainer(SGDClientTrainer):
 
     def __init__(self,
@@ -62,7 +63,7 @@ parser.add_argument('--world_size', type=int)
 parser.add_argument('--rank', type=int)
 
 parser.add_argument("--epoch", type=int, default=2)
-parser.add_argument("--lr", type=float, default=0.1)
+parser.add_argument("--lr", type=float, default=0.001)
 parser.add_argument("--batch_size", type=int, default=100)
 args = parser.parse_args()
 
@@ -77,15 +78,13 @@ data_dir = '../../dataset/'
 classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
 
 num_classes = 4
-batch_size = 32
+batch_size = 8
 num_workers = 4
 
 train_transforms = transforms.Compose([
                            transforms.Resize(size=[224, 224]),
-                           #transforms.Resize(size=[299,299]),
-                           transforms.RandomRotation([0,360]),
-                           transforms.RandomVerticalFlip(),
-                           transforms.RandomHorizontalFlip(),
+                           transforms.RandomVerticalFlip(0.5),
+                           transforms.RandomRotation(30),
                            transforms.ToTensor(),
                            transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
                        ])
@@ -123,7 +122,7 @@ for i in folds:
     validloader = torch.utils.data.DataLoader(valid_data, batch_size=batch_size,
                                                shuffle=True, num_workers=num_workers)
 
-    testloader = torch.utils.data.DataLoader(valid_data, batch_size=batch_size,
+    testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
                                               shuffle=False, num_workers=num_workers)
 
     train_loaders.append(trainloader)
@@ -146,10 +145,17 @@ print("Num valid full size:", sum(all_size_valid))
 print('Num test images: ', len(valid_data), (testloader))
 print("Num full size (train+valid+test):", sum(all_size_train) + sum(all_size_valid) + len(valid_data))
 
-model = MLP()
-optimizer = torch.optim.SGD(model.parameters(), lr=args.lr)
+#model = MLP()
+
+model_ft = models.squeezenet1_0(pretrained=True)
+for param in model_ft.parameters():
+    param.requires_grad = True
+model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
+model_ft.num_classes = num_classes
+
+optimizer = torch.optim.SGD(model_ft.parameters(), lr=args.lr)
 criterion = nn.CrossEntropyLoss()
-handler = AsyncClientTrainer(model,
+handler = AsyncClientTrainer(model_ft,
                              trainloader,
                              epochs=args.epoch,
                              optimizer=optimizer,
@@ -163,4 +169,4 @@ network = DistNetwork(address=(args.ip, args.port),
 Manager = ActiveClientManager(trainer=handler, network=network)
 Manager.run()
 
-print("Final Score Client: "+str(evaluate(model, criterion, testloader)))
+print("Final Score Client: "+str(evaluate(model_ft, criterion, testloader)))
