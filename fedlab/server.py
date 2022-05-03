@@ -9,7 +9,7 @@ from fedlab.core.network import DistNetwork
 from fedlab.core.server.handler import AsyncParameterServerHandler
 from fedlab.core.server.manager import AsynchronousServerManager
 from fedlab.utils.functional import evaluate
-from fedlab.utils.functional import partition_report
+from torchvision import datasets, models, transforms
 
 import torchvision
 import torchvision.transforms as transforms
@@ -17,7 +17,7 @@ import torchvision.transforms as transforms
 
 # torch model
 class MLP(nn.Module):
-    def __init__(self, input_size=784, output_size=10):
+    def __init__(self, input_size=784, output_size=4):
         super(MLP, self).__init__()
         self.fc1 = nn.Linear(input_size, 200)
         self.fc2 = nn.Linear(200, 200)
@@ -31,6 +31,31 @@ class MLP(nn.Module):
         x = self.fc3(x)
         return x
 
+    def set_parameter_requires_grad(self, model, feature_extracting):
+        if feature_extracting:
+            for param in model.parameters():
+                param.requires_grad = True
+
+    def initialize_model(self, model_name, num_classes, feature_extract, use_pretrained=True):
+        # Inicializando cada variável específica para cada modelo
+        model_ft = None
+        input_size = 0
+
+        if model_name == "resnet":
+            """ Resnet18
+            """
+            # model_ft = models.resnet18(pretrained=use_pretrained)
+            model_ft = models.resnet34(pretrained=use_pretrained)
+            self.set_parameter_requires_grad(model_ft, feature_extract)
+            num_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(num_ftrs, num_classes)
+            input_size = 224
+
+        else:
+            print("Invalid model name, exiting...")
+            exit()
+
+        return model_ft, input_size
 
 
 if __name__ == "__main__":
@@ -41,7 +66,9 @@ if __name__ == "__main__":
     parser.add_argument('--world_size', type=int)
     args = parser.parse_args()
 
-    model = MLP()
+    mlp = MLP()
+    model, input_size = mlp.initialize_model("resnet", 4, feature_extract=True, use_pretrained=True)
+
     handler = AsyncParameterServerHandler(model, alpha=0.5, total_time=5)
 
     network = DistNetwork(address=(args.ip, args.port),

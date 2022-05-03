@@ -1,11 +1,10 @@
-import torchvision
 import torchvision.transforms as transforms
 import torch
 import argparse
 import sys
 import os
-
 from torch import nn
+import torchvision.datasets as datasets
 
 sys.path.append("../../")
 from fedlab.core.client.manager import ActiveClientManager
@@ -73,32 +72,80 @@ if torch.cuda.is_available():
 else:
     args.cuda = False
 
-# get mnist dataset
-root = "../../tests/data/mnist/"
-trainset = torchvision.datasets.MNIST(root=root,
-                                      train=True,
-                                      download=True,
-                                      transform=transforms.ToTensor())
+data_dir = '../../dataset/'
 
-testset = torchvision.datasets.MNIST(root=root, train=False, download=True, transform=transforms.ToTensor())
 
-trainloader = torch.utils.data.DataLoader(
-    trainset,
-    sampler=RawPartitionSampler(trainset,
-                                client_id=args.rank,
-                                num_replicas=args.world_size - 1),
-    batch_size=args.batch_size,
-    drop_last=True,
-    num_workers=args.world_size)
+classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
 
-testloader = torch.utils.data.DataLoader(
-    testset,
-    sampler=RawPartitionSampler(testset,
-                                client_id=args.rank,
-                                num_replicas=args.world_size - 1),
-    batch_size=args.batch_size,
-    drop_last=True,
-    num_workers=args.world_size)
+num_classes = 4
+batch_size = 32
+num_workers = 4
+
+train_transforms = transforms.Compose([
+                           transforms.Resize(size=[224, 224]),
+                           #transforms.Resize(size=[299,299]),
+                           transforms.RandomRotation([0,360]),
+                           transforms.RandomVerticalFlip(),
+                           transforms.RandomHorizontalFlip(),
+                           transforms.ToTensor(),
+                           transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
+                       ])
+
+test_transforms = transforms.Compose([
+                           transforms.Resize(size=[224, 224]),
+                           transforms.ToTensor(),
+                           transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
+                       ])
+
+trains_dir = []
+valids_dir = []
+train_loaders = []
+valid_loaders = []
+test_loaders = []
+
+folds = os.listdir(data_dir + '5-fold')
+folds.sort()
+
+all_size_train = []
+all_size_valid = []
+
+for i in folds:
+    train_dir = os.path.join(data_dir + '5-fold/', i)
+    valid_dir = os.path.join(data_dir + '5-fold/', i)
+    test_dir = os.path.join(data_dir + '5-fold/', i)
+
+    train_data = datasets.ImageFolder(train_dir, transform=train_transforms)
+    valid_data = datasets.ImageFolder(valid_dir, transform=test_transforms)
+    test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
+
+    trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size,
+                                               shuffle=True, num_workers=num_workers)
+
+    validloader = torch.utils.data.DataLoader(valid_data, batch_size=batch_size,
+                                               shuffle=True, num_workers=num_workers)
+
+    testloader = torch.utils.data.DataLoader(valid_data, batch_size=batch_size,
+                                              shuffle=False, num_workers=num_workers)
+
+    train_loaders.append(trainloader)
+    valid_loaders.append(validloader)
+    test_loaders.append(testloader)
+
+    print("----------------------------------------------------------------------------------------")
+    print(i)
+    print('Num training images: ', len(train_data), trainloader)
+    print('Num valid images: ', len(valid_data), validloader)
+    print('Num test images: ', len(valid_data), (testloader))
+
+    all_size_train.append(len(train_data))
+    all_size_valid.append(len(valid_data))
+
+print("----------------------------------------------------------------------------------------")
+print("\n\n----------------------------------------------------------------------------------------")
+print("Num train full size:", sum(all_size_train))
+print("Num valid full size:", sum(all_size_valid))
+print('Num test images: ', len(valid_data), (testloader))
+print("Num full size (train+valid+test):", sum(all_size_train) + sum(all_size_valid) + len(valid_data))
 
 model = MLP()
 optimizer = torch.optim.SGD(model.parameters(), lr=args.lr)
