@@ -62,9 +62,9 @@ parser.add_argument('--port', type=str, default='3002')
 parser.add_argument('--world_size', type=int)
 parser.add_argument('--rank', type=int)
 
-parser.add_argument("--epoch", type=int, default=2)
+parser.add_argument("--epoch", type=int, default=30)
 parser.add_argument("--lr", type=float, default=0.001)
-parser.add_argument("--batch_size", type=int, default=100)
+parser.add_argument("--batch_size", type=int, default=4)
 args = parser.parse_args()
 
 if torch.cuda.is_available():
@@ -72,13 +72,13 @@ if torch.cuda.is_available():
 else:
     args.cuda = False
 
-data_dir = '../../dataset/'
+data_dir = '../dataset/'
 
 
 classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
 
 num_classes = 4
-batch_size = 8
+batch_size = 4
 num_workers = 4
 
 train_transforms = transforms.Compose([

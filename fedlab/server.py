@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
 
 
-    batch_size = 16
+    batch_size = 4
     num_workers = 4
     test_transforms = transforms.Compose([
         transforms.Resize(size=[224, 224]),
@@ -70,7 +70,7 @@ if __name__ == "__main__":
         transforms.ToTensor(),
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ])
-    data_dir = '../../dataset/'
+    data_dir = '../dataset/'
     classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
     test_dir = os.path.join(data_dir + '5-fold/')
     test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
