@@ -33,6 +33,10 @@ class MLP(nn.Module):
         return x
 """
 
+def set_parameter_requires_grad(model, feature_extracting):
+    if feature_extracting:
+        for param in model.parameters():
+            param.requires_grad = True
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Distbelief training example')
@@ -40,15 +44,31 @@ if __name__ == "__main__":
     parser.add_argument('--ip', type=str, default='127.0.0.1')
     parser.add_argument('--port', type=str, default='3002')
     parser.add_argument('--world_size', type=int)
+    parser.add_argument('--num_workers', type=int, default=4)
+    parser.add_argument('--batch_size', type=int, default=32)
+
     args = parser.parse_args()
 
     #model = MLP()
 
-    model_ft = models.squeezenet1_0(pretrained=True)
-    for param in model_ft.parameters():
-        param.requires_grad = True
-    model_ft.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1, 1), stride=(1, 1))
-    model_ft.num_classes = 4
+
+    """
+    #ShuffleNet
+    model_ft = models.shufflenet_v2_x1_0(pretrained=True)
+    set_parameter_requires_grad(model_ft, True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, 4)
+    input_size = 224
+    """
+
+    ###AlexNet###
+    feature_extract = True
+    model_ft = models.alexnet(pretrained=True)
+    set_parameter_requires_grad(model_ft, feature_extract)
+    num_ftrs = model_ft.classifier[6].in_features
+    model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
+    input_size = 224
+
 
     handler = AsyncParameterServerHandler(model_ft, alpha=0.5, total_time=5)
 
@@ -61,23 +81,46 @@ if __name__ == "__main__":
 
 
 
-    batch_size = 4
+    batch_size = 32
     num_workers = 4
-    test_transforms = transforms.Compose([
+
+    data_dir = '../dataset/'
+    classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
+
+    train_transforms = transforms.Compose([
         transforms.Resize(size=[224, 224]),
         transforms.RandomVerticalFlip(0.5),
         transforms.RandomRotation(30),
         transforms.ToTensor(),
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ])
-    data_dir = '../dataset/'
-    classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
-    test_dir = os.path.join(data_dir + '5-fold/')
-    test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
-    testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
-                                             shuffle=False, num_workers=num_workers)
 
+    test_transforms = transforms.Compose([
+        transforms.Resize(size=[224, 224]),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
 
+    trains_dir = []
+    valids_dir = []
+    train_loaders = []
+    valid_loaders = []
+    test_loaders = []
+
+    folds = os.listdir(data_dir + '5-fold')
+
+    all_size_train = []
+    all_size_valid = []
+
+    for i in folds:
+        test_dir = os.path.join(data_dir + '5-fold/', i + '/test/')
+
+        test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
+        testloader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False, num_workers=4)
+        test_loaders.append(testloader)
+
+        print("\n\n\n Server Perspective")
+        print('Num test images: ', len(test_data))
 
 
     criterion = nn.CrossEntropyLoss()
