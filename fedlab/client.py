@@ -1,19 +1,18 @@
-import torchvision.transforms as transforms
-import torch
-import argparse
-import sys
+from cgitb import handler
 import os
+import sys
+import argparse
+import torch
 from torch import nn
-import torchvision.datasets as datasets
+sys.path.append("../../")
+from fedlab.core.network import DistNetwork
+from fedlab.core.server.handler import AsyncParameterServerHandler
+from fedlab.core.server.manager import AsynchronousServerManager
+from fedlab.utils.functional import evaluate
 from torchvision import datasets, models, transforms
 
-sys.path.append("../../")
-from fedlab.core.client.manager import ActiveClientManager
-from fedlab.core.client.trainer import SGDClientTrainer
-from fedlab.utils.dataset.sampler import RawPartitionSampler
-from fedlab.core.network import DistNetwork
-from fedlab.utils.functional import AverageMeter, evaluate
-
+import torchvision
+import torchvision.transforms as transforms
 
 """
 # torch model
@@ -33,140 +32,97 @@ class MLP(nn.Module):
         x = self.fc3(x)
         return x
 """
-class AsyncClientTrainer(SGDClientTrainer):
 
-    def __init__(self,
-                 model,
-                 data_loader,
-                 epochs,
-                 optimizer,
-                 criterion,
-                 cuda=False,
-                 logger=None):
-        super().__init__(model, data_loader, epochs, optimizer, criterion,
-                         cuda, logger)
-        self.time = 0
+def set_parameter_requires_grad(model, feature_extracting):
+    if feature_extracting:
+        for param in model.parameters():
+            param.requires_grad = True
 
-    def local_process(self, payload):
-        self.time = payload[1].item()
-        return super().local_process(payload)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Distbelief training example')
 
-    @property
-    def uplink_package(self):
-        return [self.model_parameters, torch.Tensor([self.time])]
+    parser.add_argument('--ip', type=str, default='127.0.0.1')
+    parser.add_argument('--port', type=str, default='3002')
+    parser.add_argument('--world_size', type=int)
+    parser.add_argument('--num_workers', type=int, default=4)
+    parser.add_argument('--batch_size', type=int, default=32)
+
+    args = parser.parse_args()
+
+    #model = MLP()
 
 
-parser = argparse.ArgumentParser(description='Distbelief training example')
-parser.add_argument('--ip', type=str, default='127.0.0.1')
-parser.add_argument('--port', type=str, default='3002')
-parser.add_argument('--world_size', type=int)
-parser.add_argument('--rank', type=int)
+    """
+    #ShuffleNet
+    model_ft = models.shufflenet_v2_x1_0(pretrained=True)
+    set_parameter_requires_grad(model_ft, True)
+    num_ftrs = model_ft.fc.in_features
+    model_ft.fc = nn.Linear(num_ftrs, 4)
+    input_size = 224
+    """
 
-parser.add_argument("--epoch", type=int, default=30)
-parser.add_argument("--lr", type=float, default=0.001)
-parser.add_argument("--batch_size", type=int, default=4)
-args = parser.parse_args()
-
-if torch.cuda.is_available():
-    args.cuda = True
-else:
-    args.cuda = False
-
-data_dir = '../dataset/'
+    ###AlexNet###
+    feature_extract = True
+    model_ft = models.alexnet(pretrained=True)
+    set_parameter_requires_grad(model_ft, feature_extract)
+    num_ftrs = model_ft.classifier[6].in_features
+    model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
+    input_size = 224
 
 
-classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
+    handler = AsyncParameterServerHandler(model_ft, alpha=0.5, total_time=5)
 
-num_classes = 4
-batch_size = 4
-num_workers = 4
+    network = DistNetwork(address=(args.ip, args.port),
+                          world_size=args.world_size,
+                          rank=0)
+    Manager = AsynchronousServerManager(handler=handler, network=network)
 
-train_transforms = transforms.Compose([
-                           transforms.Resize(size=[224, 224]),
-                           transforms.RandomVerticalFlip(0.5),
-                           transforms.RandomRotation(30),
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
-                       ])
+    Manager.run()
 
-test_transforms = transforms.Compose([
-                           transforms.Resize(size=[224, 224]),
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
-                       ])
 
-trains_dir = []
-valids_dir = []
-train_loaders = []
-valid_loaders = []
-test_loaders = []
 
-folds = os.listdir(data_dir + '5-fold')
-folds.sort()
+    batch_size = 32
+    num_workers = 4
 
-all_size_train = []
-all_size_valid = []
+    data_dir = '../dataset/'
+    classes = ['Common_rust', 'Gray_Leaf', 'Healthy', 'Northern_Leaf_Blight']
 
-for i in folds:
-    train_dir = os.path.join(data_dir + '5-fold/', i)
-    valid_dir = os.path.join(data_dir + '5-fold/', i)
-    test_dir = os.path.join(data_dir + '5-fold/', i)
+    train_transforms = transforms.Compose([
+        transforms.Resize(size=[224, 224]),
+        transforms.RandomVerticalFlip(0.5),
+        transforms.RandomRotation(30),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
 
-    train_data = datasets.ImageFolder(train_dir, transform=train_transforms)
-    valid_data = datasets.ImageFolder(valid_dir, transform=test_transforms)
-    test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
+    test_transforms = transforms.Compose([
+        transforms.Resize(size=[224, 224]),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
 
-    trainloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size,
-                                               shuffle=True, num_workers=num_workers)
+    trains_dir = []
+    valids_dir = []
+    train_loaders = []
+    valid_loaders = []
+    test_loaders = []
 
-    validloader = torch.utils.data.DataLoader(valid_data, batch_size=batch_size,
-                                               shuffle=True, num_workers=num_workers)
+    folds = os.listdir(data_dir + '5-fold')
 
-    testloader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
-                                              shuffle=False, num_workers=num_workers)
+    all_size_train = []
+    all_size_valid = []
 
-    train_loaders.append(trainloader)
-    valid_loaders.append(validloader)
-    test_loaders.append(testloader)
+    for i in folds:
+        test_dir = os.path.join(data_dir + '5-fold/', i + '/test/')
 
-    print("----------------------------------------------------------------------------------------")
-    print(i)
-    print('Num training images: ', len(train_data), trainloader)
-    print('Num valid images: ', len(valid_data), validloader)
-    print('Num test images: ', len(valid_data), (testloader))
+        test_data = datasets.ImageFolder(test_dir, transform=test_transforms)
+        testloader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False, num_workers=4)
+        test_loaders.append(testloader)
 
-    all_size_train.append(len(train_data))
-    all_size_valid.append(len(valid_data))
+        print("\n\n\n Server Perspective")
+        print('Num test images: ', len(test_data))
 
-print("----------------------------------------------------------------------------------------")
-print("\n\n----------------------------------------------------------------------------------------")
-print("Num train full size:", sum(all_size_train))
-print("Num valid full size:", sum(all_size_valid))
-print('Num test images: ', len(valid_data), (testloader))
-print("Num full size (train+valid+test):", sum(all_size_train) + sum(all_size_valid) + len(valid_data))
 
-#model = MLP()
+    criterion = nn.CrossEntropyLoss()
 
-model_ft = models.squeezenet1_0(pretrained=True)
-for param in model_ft.parameters():
-    param.requires_grad = True
-model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
-model_ft.num_classes = num_classes
-
-optimizer = torch.optim.SGD(model_ft.parameters(), lr=args.lr)
-criterion = nn.CrossEntropyLoss()
-handler = AsyncClientTrainer(model_ft,
-                             trainloader,
-                             epochs=args.epoch,
-                             optimizer=optimizer,
-                             criterion=criterion,
-                             cuda=args.cuda)
-
-network = DistNetwork(address=(args.ip, args.port),
-                      world_size=args.world_size,
-                      rank=args.rank)
-
-Manager = ActiveClientManager(trainer=handler, network=network)
-Manager.run()
-
-print("Final Score Client: "+str(evaluate(model_ft, criterion, testloader)))
+    print("Final Score Server: "+str(evaluate(model_ft, criterion, testloader)))
