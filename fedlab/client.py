@@ -1,3 +1,4 @@
+from time import time
 import torchvision.transforms as transforms
 import torch
 import argparse
@@ -161,6 +162,9 @@ for i in folds:
 
 
 
+
+
+
 ###AlexNet###
 feature_extract = True
 model_ft = models.alexnet(pretrained=True)
@@ -171,7 +175,10 @@ input_size = 224
 
 
 
+
+
 """
+
 ### Resnet18###
 feature_extract = True
 model_ft = models.resnet18(pretrained=True)
@@ -179,19 +186,24 @@ set_parameter_requires_grad(model_ft, feature_extract)
 num_ftrs = model_ft.fc.in_features
 model_ft.fc = nn.Linear(num_ftrs, 4)
 input_size = 224
-"""
 
 
+
 """
+
+"""
+
 ###SqueezeNet###
 model_ft = models.squeezenet1_0(pretrained=True)
 set_parameter_requires_grad(model_ft, True)
 model_ft.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1,1), stride=(1,1))
 model_ft.num_classes = 4
 input_size = 224
-"""
 
 """
+
+""" 
+
 ###VGG11_b###
 use_pretrained=True
 feature_extract = True
@@ -200,6 +212,7 @@ set_parameter_requires_grad(model_ft, feature_extract)
 num_ftrs = model_ft.classifier[6].in_features
 model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
 input_size = 224
+
 """
 
 optimizer = torch.optim.SGD(model_ft.parameters(), lr=args.lr)
@@ -217,7 +230,13 @@ network = DistNetwork(address=(args.ip, args.port),
                       world_size=args.world_size,
                       rank=args.rank)
 
+t = time()
+
+
 Manager = ActiveClientManager(trainer=handler, network=network)
 Manager.run()
 
+tend = time()
+
 print("Final Score Client: "+str(evaluate(model_ft, criterion, testloader)))
+print((tend - t)/60)

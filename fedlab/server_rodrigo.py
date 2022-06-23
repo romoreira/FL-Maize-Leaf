@@ -39,6 +39,47 @@ def set_parameter_requires_grad(model, feature_extracting):
         for param in model.parameters():
             param.requires_grad = True
 
+def conf_matrix(fx, y, nome):
+
+        if(nome == 'treino'):
+
+          preds = fx.max(1, keepdim=True)[1]
+          correct = y
+
+          c = correct.tolist()
+          p = preds.flatten().tolist()
+
+          train_correct_list.append(c)
+          train_predict_list.append(p)
+
+          return train_correct_list, train_predict_list
+
+        if(nome == 'validacao'):
+
+          preds = fx.max(1, keepdim=True)[1]
+          correct = y
+
+          c = correct.tolist()
+          p = preds.flatten().tolist()
+
+          valid_correct_list.append(c)
+          valid_predict_list.append(p)
+
+          return valid_correct_list, valid_predict_list
+
+        if(nome == 'teste'):
+
+          preds = fx.max(1, keepdim=True)[1]
+          correct = y
+
+          c = correct.tolist()
+          p = preds.flatten().tolist()
+
+          test_correct_list.append(c)
+          test_predict_list.append(p)
+
+          return test_correct_list, test_predict_list
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Distbelief training example')
 
@@ -64,7 +105,7 @@ if __name__ == "__main__":
     """
 
     
-    
+    """
 
     ###AlexNet###
     feature_extract = True
@@ -74,11 +115,10 @@ if __name__ == "__main__":
     model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
     input_size = 224
     
-    
+    """
     
     
 
-    """
     
     ###Resnet18###
     feature_extract = True
@@ -89,7 +129,6 @@ if __name__ == "__main__":
     input_size = 224
     
     
-    """
 
     """
     
