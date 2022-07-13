@@ -22,7 +22,7 @@ from sklearn import metrics
 import seaborn as sns
 
 
-model_name = "resnet"
+model_name = "shufflenet"
 num_classes = 4 
 feature_extract = True
 
@@ -98,7 +98,7 @@ def matriz_confusao(correct, pred, nome, x):
       ax = plt.subplot()
       sns.heatmap(cm, annot=True, cmap="YlGnBu", fmt="d") #annot=True to annotate cells
       ax.set_title('Matriz de Confusão ('+nome+') ('+x+')')
-      plt.savefig(resultados_dir+'/'+'matrizconfusao_'+nome[:3]+'_'+x+'.png')
+      plt.savefig(resultados_dir+'/'+'matrizconfusao_'+nome[:3]+'_'+x+'.pdf')
       plt.close()
       plt.show()
 
@@ -130,7 +130,7 @@ def matriz_confusao(correct, pred, nome, x):
       plt.ylim([0, 1])
       plt.ylabel('True Positive Rate')
       plt.xlabel('False Positive Rate')
-      plt.savefig(resultados_dir+'/'+'ROC_'+nome[:3]+'_'+x+'.png')
+      plt.savefig(resultados_dir+'/'+'ROC_'+nome[:3]+'_'+x+'.pdf')
       plt.close()
       #plt.show()
       '''
