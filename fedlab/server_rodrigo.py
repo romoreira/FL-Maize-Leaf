@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     #model = MLP()
 
-    """
+    
 
     #ShuffleNet
     model_ft = models.shufflenet_v2_x1_0(pretrained=True)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     model_ft.fc = nn.Linear(num_ftrs, 4)
     input_size = 224
     
-    """
+    
 
     
     """
@@ -115,10 +115,10 @@ if __name__ == "__main__":
     model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
     input_size = 224
     
+     """
+    
+    
     """
-    
-    
-
     
     ###Resnet18###
     feature_extract = True
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     model_ft.fc = nn.Linear(num_ftrs, 4)
     input_size = 224
     
-    
+    """
 
     """
     
@@ -138,12 +138,13 @@ if __name__ == "__main__":
     model_ft.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1,1), stride=(1,1))
     model_ft.num_classes = 4
     input_size = 224
-   
-   """
-    
-    
 
     """
+
+    
+    
+    """
+    
     ###VGG11_b###
     use_pretrained = True
     feature_extract = True
@@ -152,7 +153,9 @@ if __name__ == "__main__":
     num_ftrs = model_ft.classifier[6].in_features
     model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
     input_size = 224
+
     """
+    
 
     handler = AsyncParameterServerHandler(model_ft, alpha=0.5, total_time=5)
 

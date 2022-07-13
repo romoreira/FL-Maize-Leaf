@@ -1,0 +1,76 @@
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     0.5357    1.0000    0.6977       120
+           Gray_Leaf     0.0000    0.0000    0.0000        52
+             Healthy     0.8298    1.0000    0.9070       117
+Northern_Leaf_Blight     0.9565    0.2222    0.3607        99
+
+            accuracy                         0.6675       388
+           macro avg     0.5805    0.5556    0.4913       388
+        weighted avg     0.6600    0.6675    0.5813       388
+
+Matriz de Confusão 
+[[120   0   0   0]
+ [ 40   0  11   1]
+ [  0   0 117   0]
+ [ 64   0  13  22]]
+ 
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     0.6630    1.0000    0.7973       120
+           Gray_Leaf     0.0000    0.0000    0.0000        52
+             Healthy     0.8357    1.0000    0.9105       117
+Northern_Leaf_Blight     0.7463    0.5051    0.6024        99
+
+            accuracy                         0.7397       388
+           macro avg     0.5612    0.6263    0.5776       388
+        weighted avg     0.6475    0.7397    0.6749       388
+
+Matriz de Confusão 
+[[120   0   0   0]
+ [ 22   0  13  17]
+ [  0   0 117   0]
+ [ 39   0  10  50]]
+ 
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     0.6122    1.0000    0.7595       120
+           Gray_Leaf     0.0000    0.0000    0.0000        52
+             Healthy     0.8478    1.0000    0.9176       117
+Northern_Leaf_Blight     0.7963    0.4343    0.5621        99
+
+            accuracy                         0.7216       388
+           macro avg     0.5641    0.6086    0.5598       388
+        weighted avg     0.6482    0.7216    0.6550       388
+
+Matriz de Confusão 
+[[120   0   0   0]
+ [ 29   0  12  11]
+ [  0   0 117   0]
+ [ 47   0   9  43]]
+ 
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     0.9015    0.9917    0.9444       120
+           Gray_Leaf     0.0000    0.0000    0.0000        52
+             Healthy     0.9669    1.0000    0.9832       117
+Northern_Leaf_Blight     0.6444    0.8788    0.7436        99
+
+            accuracy                         0.8325       388
+           macro avg     0.6282    0.7176    0.6678       388
+        weighted avg     0.7348    0.8325    0.7783       388
+
+Matriz de Confusão 
+[[119   0   1   0]
+ [  2   0   2  48]
+ [  0   0 117   0]
+ [ 11   0   1  87]]
+ 
