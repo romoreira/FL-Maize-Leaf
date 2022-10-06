@@ -1,0 +1,177 @@
+15:12:16 - network 0 - INFO - torch.distributed connection is initializing with ip address 127.0.0.1:3002, rank 0, world size: 3, backend gloo, ethernet None.
+Treinamento em GPU!
+----------------------------------------------------------------------------------------
+round_1
+Num training images:  3080
+Num valid images:  384
+Num test images:  388
+----------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------
+Num train full size: 3080
+Num valid full size: 384
+Num test images:  388 <torch.utils.data.dataloader.DataLoader object at 0x7f00508ff790>
+Num full size (train+valid+test): 3852
+PRocurando model_name: shufflenet
+Number of trainable parameters: 1257704
+15:12:20 - network 2 - INFO - torch.distributed connection is initializing with ip address 127.0.0.1:3002, rank 2, world size: 3, backend gloo, ethernet None.
+Treinamento em GPU!
+----------------------------------------------------------------------------------------
+round_1
+Num training images:  3080
+Num valid images:  384
+Num test images:  388
+----------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------
+Num train full size: 3080
+Num valid full size: 384
+Num test images:  388 <torch.utils.data.dataloader.DataLoader object at 0x7ff2788a2790>
+Num full size (train+valid+test): 3852
+PRocurando model_name: shufflenet
+Number of trainable parameters: 1257704
+15:12:20 - network 1 - INFO - torch.distributed connection is initializing with ip address 127.0.0.1:3002, rank 1, world size: 3, backend gloo, ethernet None.
+15:12:20 - network 1 - INFO - Sent package to destination 0, message code MessageCode.SetUp, content length 1
+15:12:20 - network 0 - INFO - Received package from source 1, message code MessageCode.SetUp, content length 1
+15:12:20 - root - INFO - request parameter procedure.
+15:12:20 - network 2 - INFO - Sent package to destination 0, message code MessageCode.SetUp, content length 1
+15:12:20 - network 0 - INFO - Received package from source 2, message code MessageCode.SetUp, content length 1
+15:12:20 - root - INFO - request parameter procedure.
+15:12:20 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterRequest, content length 0
+15:12:20 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:12:20 - network 0 - INFO - Sent package to destination 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:12:20 - network 1 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:12:20 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterRequest, content length 0
+15:12:20 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:12:20 - root - INFO - Local train procedure is running
+15:12:20 - network 0 - INFO - Sent package to destination 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:12:20 - network 2 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:12:20 - root - INFO - Local train procedure is running
+15:18:58 - root - INFO - Local train procedure is finished
+15:18:58 - root - INFO - Uploading information to server.
+15:18:58 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:58 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:58 - root - INFO - request parameter procedure.
+15:18:58 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:18:58 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterRequest, content length 0
+15:18:58 - network 2 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:18:58 - network 0 - INFO - Sent package to destination 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:58 - root - INFO - Local train procedure is running
+15:18:59 - root - INFO - Local train procedure is finished
+15:18:59 - root - INFO - Uploading information to server.
+15:18:59 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:59 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:59 - root - INFO - request parameter procedure.
+15:18:59 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterRequest, content length 0
+15:18:59 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:18:59 - network 0 - INFO - Sent package to destination 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:18:59 - network 1 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:18:59 - root - INFO - Local train procedure is running
+15:25:42 - root - INFO - Local train procedure is finished
+15:25:42 - root - INFO - Uploading information to server.
+15:25:42 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - root - INFO - request parameter procedure.
+15:25:42 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterRequest, content length 0
+15:25:42 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:25:42 - root - INFO - Local train procedure is finished
+15:25:42 - root - INFO - Uploading information to server.
+15:25:42 - network 1 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:25:42 - network 0 - INFO - Sent package to destination 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - root - INFO - Local train procedure is running
+15:25:42 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - root - INFO - request parameter procedure.
+15:25:42 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:25:42 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterRequest, content length 0
+15:25:42 - network 0 - INFO - Sent package to destination 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:25:42 - network 2 - INFO - Received package from source 0, message code MessageCode.ParameterUpdate, content length 1
+15:25:42 - root - INFO - Local train procedure is running
+15:32:25 - root - INFO - Local train procedure is finished
+15:32:25 - root - INFO - Uploading information to server.
+15:32:25 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterUpdate, content length 1257705
+15:32:25 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:32:25 - root - INFO - request parameter procedure.
+15:32:25 - root - INFO - Local train procedure is finished
+15:32:25 - root - INFO - Uploading information to server.
+15:32:25 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterUpdate, content length 1257705
+15:32:25 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterUpdate, content length 1257705
+15:32:25 - root - INFO - request parameter procedure.
+15:32:25 - network 0 - INFO - Received package from source 1, message code MessageCode.ParameterRequest, content length 0
+15:32:25 - network 1 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:32:25 - network 0 - INFO - Sent package to destination 1, message code MessageCode.Exit, content length 0
+15:32:25 - network 1 - INFO - Received package from source 0, message code MessageCode.Exit, content length 0
+15:32:25 - network 1 - INFO - Overall communication volume: sent 15092464 bytes, received 12 bytes.
+15:32:25 - network 0 - INFO - Received package from source 2, message code MessageCode.ParameterRequest, content length 0
+15:32:25 - network 2 - INFO - Sent package to destination 0, message code MessageCode.ParameterRequest, content length 0
+15:32:25 - network 0 - INFO - Sent package to destination 2, message code MessageCode.Exit, content length 0
+15:32:25 - network 2 - INFO - Received package from source 0, message code MessageCode.Exit, content length 0
+15:32:25 - network 2 - INFO - Sent package to destination 0, message code MessageCode.Exit, content length 0
+15:32:25 - network 0 - INFO - Received package from source 2, message code MessageCode.Exit, content length 0
+15:32:25 - network 2 - INFO - Overall communication volume: sent 15092464 bytes, received 12 bytes.
+15:32:25 - network 0 - INFO - Overall communication volume: sent 30184920 bytes, received 30184928 bytes.
+
+
+
+ Server Perspective
+Num test images:  388
+Final Score Client: (14.155107080936432, 0.6391752577319587)
+20.091265161832172
+1
+Final Score Client: (11.622813403606415, 0.8221649484536082)
+20.091353837649027
+1
+===========================================================================================
+Listas: 
+Correct:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+Predict:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 3, 3, 2, 2, 2, 0, 0, 0, 2, 2, 0, 0, 3, 2, 0, 0, 0, 3, 0, 0, 0, 0, 2, 3, 0, 0, 3, 0, 2, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 0, 3, 2, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0]
+
+
+Matriz de Confusão (teste) do Round_1: 
+[[120   0   0   0]
+ [ 35   0  17   0]
+ [  0   0 117   0]
+ [ 67   0  21  11]]
+
+Relatório de classificação (teste): 
+                      precision    recall  f1-score   support
+
+         Common_rust       0.54      1.00      0.70       120
+           Gray_Leaf       0.00      0.00      0.00        52
+             Healthy       0.75      1.00      0.86       117
+Northern_Leaf_Blight       1.00      0.11      0.20        99
+
+            accuracy                           0.64       388
+           macro avg       0.57      0.53      0.44       388
+        weighted avg       0.65      0.64      0.53       388
+
+===========================================================================================
+===========================================================================================
+Listas: 
+Correct:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+Predict:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 0, 3, 3, 3, 2, 3, 3, 3, 3, 0, 3, 2, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 3, 3, 3, 2, 3, 3, 0, 3, 2, 3, 0, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 0, 3, 3]
+
+
+Matriz de Confusão (teste) do Round_1: 
+[[120   0   0   0]
+ [  3   0  11  38]
+ [  0   0 117   0]
+ [ 11   0   6  82]]
+
+Relatório de classificação (teste): 
+                      precision    recall  f1-score   support
+
+         Common_rust       0.90      1.00      0.94       120
+           Gray_Leaf       0.00      0.00      0.00        52
+             Healthy       0.87      1.00      0.93       117
+Northern_Leaf_Blight       0.68      0.83      0.75        99
+
+            accuracy                           0.82       388
+           macro avg       0.61      0.71      0.66       388
+        weighted avg       0.71      0.82      0.76       388
+
+===========================================================================================
+Final Score Server: (16.466676592826843, 0.6082474226804123)
+20.15959481795629

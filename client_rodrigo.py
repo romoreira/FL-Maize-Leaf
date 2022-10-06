@@ -22,7 +22,7 @@ from sklearn import metrics
 import seaborn as sns
 
 
-model_name = "shufflenet"
+model_name = "alexnet"
 num_classes = 4 
 feature_extract = True
 
@@ -337,8 +337,7 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
             input_size = 224
 
         elif model_name == "densenet":
-            """ Densenet
-            """
+            """ Densenet """
             model_ft = models.densenet121(pretrained=use_pretrained)
             #model_ft = models.densenet201(pretrained=use_pretrained)
             set_parameter_requires_grad(model_ft, feature_extract)
@@ -391,70 +390,6 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 
         return model_ft, input_size
 
-
-
-
-
-
-
-
-"""
-model = MLP()
-"""
-
-"""
-##ShuffleNet###
-model_ft = models.shufflenet_v2_x1_0(pretrained=True)
-set_parameter_requires_grad(model_ft, True)
-num_ftrs = model_ft.fc.in_features
-model_ft.fc = nn.Linear(num_ftrs, 4)
-input_size = 224
-"""
-
-
-
-"""
-###AlexNet###
-feature_extract = True
-model_ft = models.alexnet(pretrained=True)
-set_parameter_requires_grad(model_ft, feature_extract)
-num_ftrs = model_ft.classifier[6].in_features
-model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
-input_size = 224
-"""
-
-
-
-"""
-### Resnet18###
-feature_extract = True
-model_ft = models.resnet18(pretrained=True)
-set_parameter_requires_grad(model_ft, feature_extract)
-num_ftrs = model_ft.fc.in_features
-model_ft.fc = nn.Linear(num_ftrs, 4)
-input_size = 224
-"""
-
-"""
-###SqueezeNet###
-model_ft = models.squeezenet1_0(pretrained=True)
-set_parameter_requires_grad(model_ft, True)
-model_ft.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1,1), stride=(1,1))
-model_ft.num_classes = 4
-input_size = 224
-"""
-
-"""
-###VGG11_b###
-use_pretrained=True
-feature_extract = True
-model_ft = models.vgg11_bn(pretrained=use_pretrained)
-set_parameter_requires_grad(model_ft, feature_extract)
-num_ftrs = model_ft.classifier[6].in_features
-model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
-input_size = 224
-"""
-
 model_ft, input_size = initialize_model(model_name, num_classes, feature_extract, use_pretrained=True)
 
 optimizer = torch.optim.SGD(model_ft.parameters(), lr=args.lr)
@@ -474,6 +409,9 @@ network = DistNetwork(address=(args.ip, args.port),
 
 t = time()
 
+
+pytorch_total_params = sum(p.numel() for p in model_ft.parameters() if p.requires_grad)
+print("Number of trainable parameters: "+str(pytorch_total_params))
 
 Manager = ActiveClientManager(trainer=handler, network=network)
 Manager.run()
