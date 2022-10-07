@@ -1,0 +1,21 @@
+ Server Perspective
+Num test images:  388
+
+Relatório de classificação (teste): 
+                      precision    recall  f1-score   support
+
+         Common_rust       1.00      0.99      1.00       120
+           Gray_Leaf       0.89      0.94      0.92        52
+             Healthy       1.00      1.00      1.00       117
+Northern_Leaf_Blight       0.97      0.95      0.96        99
+
+            accuracy                           0.98       388
+           macro avg       0.96      0.97      0.97       388
+        weighted avg       0.98      0.98      0.98       388
+
+===========================================================================================
+Final Score Client: (1.0791400372690987, 0.9742268041237113)
+78.5591807047526
+1
+===========================================================================================
+
