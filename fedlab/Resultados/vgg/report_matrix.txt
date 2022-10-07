@@ -340,3 +340,41 @@ Matriz de Confusão
  [  0   0 117   0]
  [  0   7   0  92]]
  
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     1.0000    0.9917    0.9958       120
+           Gray_Leaf     0.8750    0.9423    0.9074        52
+             Healthy     1.0000    1.0000    1.0000       117
+Northern_Leaf_Blight     0.9688    0.9394    0.9538        99
+
+            accuracy                         0.9742       388
+           macro avg     0.9609    0.9683    0.9643       388
+        weighted avg     0.9753    0.9742    0.9745       388
+
+Matriz de Confusão 
+[[119   1   0   0]
+ [  0  49   0   3]
+ [  0   0 117   0]
+ [  0   6   0  93]]
+ 
+teste 
+Round_1 
+                      precision    recall  f1-score   support
+
+         Common_rust     1.0000    0.9917    0.9958       120
+           Gray_Leaf     0.8727    0.9231    0.8972        52
+             Healthy     1.0000    1.0000    1.0000       117
+Northern_Leaf_Blight     0.9588    0.9394    0.9490        99
+
+            accuracy                         0.9716       388
+           macro avg     0.9579    0.9635    0.9605       388
+        weighted avg     0.9724    0.9716    0.9719       388
+
+Matriz de Confusão 
+[[119   1   0   0]
+ [  0  48   0   4]
+ [  0   0 117   0]
+ [  0   6   0  93]]
+ 
