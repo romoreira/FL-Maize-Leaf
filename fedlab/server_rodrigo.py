@@ -104,7 +104,7 @@ if __name__ == "__main__":
     """
     
 
-
+    """
     ###AlexNet###
     feature_extract = True
     model_ft = models.alexnet(pretrained=True)
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     num_ftrs = model_ft.classifier[6].in_features
     model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
     input_size = 224
-
+    """
     
     
     """
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     """
 
         
-    """
+
     ###VGG11_b###
     use_pretrained = True
     feature_extract = True
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     num_ftrs = model_ft.classifier[6].in_features
     model_ft.classifier[6] = nn.Linear(num_ftrs, 4)
     input_size = 224
-    """
+
     
 
     handler = AsyncParameterServerHandler(model_ft, alpha=0.5, total_time=5)

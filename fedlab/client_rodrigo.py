@@ -22,7 +22,7 @@ from sklearn import metrics
 import seaborn as sns
 
 
-model_name = "alexnet"
+model_name = "vgg"
 num_classes = 4 
 feature_extract = True
 

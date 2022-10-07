@@ -12,16 +12,16 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/fedlab/launch_eg_rodrigo.sh" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="698" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/fedlab/client_rodrigo.py" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
           <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/fedlab/Resultados/shufflenet/shufflenet.txt" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="3353" />
+          <option name="caretOffset" value="3932" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/fedlab/server_rodrigo.py" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="698" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/fedlab/client_rodrigo.py" />
         </OpenedFileInfo>
       </list>
     </option>
